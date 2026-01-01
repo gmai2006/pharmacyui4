@@ -5,7 +5,6 @@ import { FileText, ShoppingCart } from 'lucide-react';
 import Header from './Header';
 import POSPage from '../pos/POSPage';
 import { useUser } from "../../context/UserContext";
-// import WorkflowQueuePage from './WorkflowQueuePage';
 import PrescriptionProcessTab from './PrescriptionProcessTab';
 
 export default function PrescriptionDashboard() {

@@ -34,10 +34,8 @@ import AuthLogPage from '../authlogs/AuthLogPage';
 import InsuranceCompanyWithPlansPage from '../insurances/InsuranceCompanyWithPlansPage';
 import PatientInsurancePage from '../patients/PatientInsurancePage';
 
-import PrescriptionListPage from '../prescriptions/PrescriptionListPage';
+
 import PrescriptionDetailPage from '../prescriptions/PrescriptionDetailPage';
-import WorkflowQueuePage from '../prescriptions/WorkflowQueuePage';
-import FillQueuePage from '../prescriptions/FillQueuePage';
 import PrescriptionDashboard from '../prescriptions2/PrescriptionDashboard';
 import RolePage from '../roles/RolePage';
 import ClaimsDashboard from '../claims/ClaimsDashboard.jsx';
@@ -45,6 +43,8 @@ import FaxJobPage from '../fax/FaxJobPage.jsx';
 
 import init from "../../init";
 import DeviceFingerprintService from '../../utils/fingerprinting';
+import NewIntakePage from '../intake/NewIntakePage.jsx';
+import PrescriptionEntryPage from '../intake/PrescriptionEntryPage.jsx';
 
 const baseUrl = `/${init.appName}/api/device-fingerprints`;
 
@@ -86,31 +86,6 @@ export default function Dashboard() {
     }
   };
 
-  // Handle add a new station
-  // const registerDevice = async (data) => {
-  //   try {
-  //     const response = await fetch(deviceUrl, {
-  //       method: 'PUT',
-  //       headers: headers,
-  //       body: JSON.stringify({
-  //         ...data,
-  //       })
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       throw new Error(errorData.message || 'Failed to register new station');
-  //     }
-
-  //     return await response.json();
-
-  //   } catch (error) {
-  //     console.error('Error registering a station:', error);
-  //   } finally {
-  //   }
-  // };
-
-
   const initializeStation = async () => {
     try {
 
@@ -148,27 +123,6 @@ export default function Dashboard() {
         localStorage.setItem('fingerprintHash', JSON.stringify(fingerprintHash));
       }
 
-      //not found => admin will need to resgister a new device
-      // const newStation = await registerDevice({
-      //   fingerprintHash: fingerprintHash,
-      //   department: department,
-      //   location: location,
-      //   browserUserAgent: navigator.userAgent,
-      //   screenResolution: DeviceFingerprintService.getScreenResolution(),
-      //   timezone: DeviceFingerprintService.getTimezone(),
-      //   accessCount: 1
-      // });
-
-      // const station = stations.find(s => s.id == newStation.stationId);
-      // const localStationName = station.stationPrefix + station.id;
-      // setStationName(localStationName);
-
-      // // Store in localStorage for quick access
-      // localStorage.setItem('stationId', newStation.id);
-      // localStorage.setItem('stationName', localStationName);
-      // localStorage.setItem('stationTimestamp', new Date().toISOString());
-      // localStorage.setItem('deviceFingerprint', JSON.stringify(fingerprintHash));
-
     } catch (err) {
       console.error('Station initialization error:', err);
     } finally {
@@ -182,17 +136,17 @@ export default function Dashboard() {
   }, [appUser]);
 
   const menuItems = [
-    { id: 'dashboard', path: '/', icon: LayoutDashboard, label: 'Dashboard', perm: [''] },
-    { id: 'prescriber', path: '/prescriber', icon: TriangleAlert, label: 'Prescriber', perm: [] },
-    { id: 'insurances', path: '/insurances', icon: TriangleAlert, label: 'Insurances', perm: [] },
-    { id: 'patients', path: '/patients', icon: TriangleAlert, label: 'Patients', perm: [] },
-    { id: 'authlogs', path: '/authlogs', icon: TriangleAlert, label: 'AuthLogs', perm: [] },
-    { id: 'claims', path: '/claims', icon: ShieldAlert, label: 'Claims', perm: [] },
-    { id: 'roles', path: '/roles', icon: Lock, label: 'Roles', perm: [] },
-    { id: 'users', path: '/users', icon: User, label: 'Users', perm: [] },
-    { id: 'faxes', path: '/faxes', icon: Phone, label: 'Faxes', perm: [] },
-    { id: 'stations', path: '/stations', icon: Computer, label: 'Stations', perm: [] },
-    { id: 'devices', path: '/devices', icon: Computer, label: 'devices', perm: [] },
+    { id: 'dashboard', path: '/', icon: LayoutDashboard, label: 'Dashboard', perm: ['SYSTEM', 'PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'prescriber', path: '/prescriber', icon: TriangleAlert, label: 'Prescriber', perm: ['SYSTEM', 'PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'insurances', path: '/insurances', icon: TriangleAlert, label: 'Insurances', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'patients', path: '/patients', icon: TriangleAlert, label: 'Patients', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'authlogs', path: '/authlogs', icon: TriangleAlert, label: 'AuthLogs', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'claims', path: '/claims', icon: ShieldAlert, label: 'Claims', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'roles', path: '/roles', icon: Lock, label: 'Roles', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'users', path: '/users', icon: User, label: 'Users', perm: ['SYSTEM', 'PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'faxes', path: '/faxes', icon: Phone, label: 'Faxes', perm: ['PHARMACIST', 'SUPERVISOR', 'TECH'] },
+    { id: 'stations', path: '/stations', icon: Computer, label: 'Stations', perm: ['SYSTEM', 'SUPERVISOR'] },
+    { id: 'devices', path: '/devices', icon: Computer, label: 'devices', perm: ['SYSTEM', 'SUPERVISOR',] },
   ];
 
 
@@ -216,8 +170,14 @@ export default function Dashboard() {
         <div className="flex-1 overflow-y-auto p-6">
           <Routes>
             <Route path="/" element={<PrescriptionDashboard />} />
-
             <Route path="/prescriber" element={<PrescriberPage />} />
+            {/* <Route path="/intake/prescription/:patientId" element={<PrescriptionEntryPage />} />
+            <Route path="intake" element={<NewIntakePage />} /> */}
+            <Route path="/intake">
+              {/* Default view when clicking the parent 'Applied Learning' */}
+              <Route index element={<NewIntakePage />} />
+              <Route path="prescription/:patientId" element={<PrescriptionEntryPage  />} />
+            </Route>
             <Route path="/insurances" element={<InsuranceCompanyWithPlansPage />} />
             <Route path="/patients" element={<PatientInsurancePage />} />
             <Route path="/prescriptions/:id" element={<PrescriptionDetailPage />} />

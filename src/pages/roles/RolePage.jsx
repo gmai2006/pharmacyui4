@@ -150,10 +150,9 @@ export default function RolePage() {
         }
 
         const csv = [
-            ["ID", "Role Name", "Display Name", "Active", "Created At", "Updated At"].join(","),
+            ["Role Name", "Display Name", "Active", "Created At", "Updated At"].join(","),
             ...roles.map((r) =>
                 [
-                    r.id,
                     r.roleName,
                     r.displayName,
                     r.active ? "Active" : "Inactive",
@@ -244,7 +243,7 @@ export default function RolePage() {
                             </thead>
                             <tbody>
                                 {currentRoles.map((r) => (
-                                    <tr key={r.id} className="border-b hover:bg-gray-50">
+                                    <tr key={r.roleName} className="border-b hover:bg-gray-50">
                                         <td className="px-6 py-4">{r.roleName}</td>
                                         <td className="px-6 py-4">{r.displayName}</td>
                                         <td className="px-6 py-4">

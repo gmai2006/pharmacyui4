@@ -285,8 +285,7 @@ const PrescriptionProcessTab = () => {
     const closeCancelDialog = () => {
         setCancelDialog({ isOpen: false, prescription: null });
     };
-
-
+    
     const DrugInfoComponent = ({ prescription }) => {
         return (
             <div>

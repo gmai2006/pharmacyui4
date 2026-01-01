@@ -4,10 +4,11 @@ import { useUser } from "../../context/UserContext";
 
 import '../../index.css';
 import '../../App.css';
+import { hasPermission } from "../../utils/util";
 
 const DashboardSidebar = ({ menuItems, sidebarOpen, setSidebarOpen }) => {
     const { appUser } = useUser();
-
+    const filetedMenus = menuItems.filter(menu => hasPermission(appUser.roles, menu.perm));
     return (
         <div className={`bg-gray-900 text-white transition-all duration-300 flex flex-col ${sidebarOpen ? 'w-64' : 'w-20'
             }`}
@@ -34,7 +35,7 @@ const DashboardSidebar = ({ menuItems, sidebarOpen, setSidebarOpen }) => {
             </div>
 
             <nav className="flex-1 p-4 space-y-2">
-                {menuItems.map(item => (
+                {filetedMenus.map(item => (
                     <Link
                         key={item.id}
                         to={item.path}

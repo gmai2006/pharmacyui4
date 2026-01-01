@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
         proxy: {
           // Proxy requests starting with '/api'
-          '/pharmacy3/api/': {
+          '/pharmacy4/api/': {
             target: 'http://localhost:8080', // The target backend server
             changeOrigin: true, // Needed for virtual hosted sites
             secure: false, // Set to true if your target uses HTTPS and you want to enforce certificate validation

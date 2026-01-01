@@ -29,10 +29,7 @@ const UserDialog = ({ roles, user, setShowModal, showNotification, addOrUpdate }
                 displayName: user.displayName,
                 email: user.email,
                 active: user.active,
-                roles: user.roles?.map((r) => ({
-                    roleId: r.roleId,
-                    roleName: r.roleName,
-                })) ?? [],
+                roles: user.roles ?? [],
             });
         } else {
             setLocalUser(emptyUser);

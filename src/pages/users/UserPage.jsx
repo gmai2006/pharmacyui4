@@ -18,14 +18,14 @@ const roleUrl = '/' + init.appName + '/api/' + 'roles/';
 const userUrl = `/${init.appName}/api/users-with-roles/`;
 
 const roleOptions = {
-    1: { color: 'bg-red-100 text-red-800' },
-    2: { color: 'bg-blue-100 text-blue-800' },
-    3: { color: 'bg-green-100 text-green-800' },
-    4: { color: 'bg-gray-100 text-gray-800' },
-    5: { color: 'bg-amber-100 text-amber-800' },
-    6: { color: 'bg-yellow-100 text-yellow-800' },
-    7: { color: 'bg-lime-100 text-lime-800' },
-    8: { color: 'bg-teal-100 teal-gray-800' },
+    ADMIN: { color: 'bg-red-100 text-red-800' },
+    SYSTEM: { color: 'bg-blue-100 text-blue-800' },
+    PHARMACIST: { color: 'bg-green-100 text-green-800' },
+    TECH: { color: 'bg-gray-100 text-gray-800' },
+    SUPERVISOR: { color: 'bg-amber-100 text-amber-800' },
+    AUDITOR: { color: 'bg-yellow-100 text-yellow-800' },
+    CALL_CENTER: { color: 'bg-lime-100 text-lime-800' },
+    DELIVERY_TECH: { color: 'bg-teal-100 teal-gray-800' },
 };
 
 const UserPage = () => {
@@ -420,7 +420,7 @@ const UserPage = () => {
                                 <tbody>
                                     {currentUsers.map((user) => (
                                         <tr
-                                            key={user.id}
+                                            key={user.userId}
                                             className="border-b border-gray-200 hover:bg-gray-50 transition"
                                         >
                                             <td className="px-6 py-4 text-sm text-gray-900 font-medium">
@@ -434,10 +434,10 @@ const UserPage = () => {
                                             </td>
                                             <td className="px-6 py-4 text-sm">
                                                 <span
-                                                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${roleOptions[user.roles[0].roleId].color
+                                                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${roleOptions[user.roles[0]].color
                                                         }`}
                                                 >
-                                                    {user.roles.map(r => r.roleName).join(',')}
+                                                    {user.roles.join(',')}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 text-sm">

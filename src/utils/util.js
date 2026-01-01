@@ -34,3 +34,10 @@ export const convertDateArrayToDate = (dateArray) => {
   return new Date(dateArray[0], dateArray[1],  dateArray[2]);
 }
 
+export const hasPermission = (roles, permissions) => {
+  const roleNames = new Set(roles);
+  const permissionSet = new Set(permissions);
+  // console.log(permissionSet.intersection(roleNames));
+  return permissionSet.intersection(roleNames).size > 0;
+}
+
